@@ -33,9 +33,11 @@ def shopping_cart():
     """TODO: Display the contents of the shopping cart. The shopping cart is a
     list held in the session that contains all the melons to be added. Check
     accompanying screenshots for details."""
-    cart_list = session.get("cart", False)
+    cart_list = session.get("cart", [])
     melon_dict = {}
     # get melon quantities
+    if not cart_list:
+        flash("Your cart is empty")
     for melon_id in cart_list:
         melon_dict[melon_id] = melon_dict.get(melon_id, [0]) 
         melon_dict[melon_id][0] += 1
