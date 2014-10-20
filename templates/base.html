@@ -18,7 +18,7 @@
                         <li><a href="/cart"><img class="melon-cart" src="/static/img/watermelon.png"> My Melon Cart</a></li>
                         
                         {% if session.get("user", False) %}
-                            <li><a href="/">Log Out</a></li>
+                            <li><a href="/logout">Log Out</a></li>
                         {% else %}
                             <li><a href="/login">Log In</a></li>
                         {% endif %}

@@ -86,6 +86,12 @@ def process_login():
     print "*******************email, password", session["user"]
     return redirect("/melons")
 
+@app.route("/logout")
+def process_logout():
+    session["user"] = []
+    flash("Logout successful")
+    return redirect("/melons")
+
 
 @app.route("/checkout")
 def checkout():
