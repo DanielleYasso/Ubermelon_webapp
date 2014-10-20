@@ -43,8 +43,9 @@ def add_to_cart(id):
     Intended behavior: when a melon is added to a cart, redirect them to the
     shopping cart page, while displaying the message
     "Successfully added to cart" """
-
-    return "Oops! This needs to be implemented!"
+    session.setdefault("cart", []).append(id)
+    flash("Melon successfully added to cart")
+    return render_template("cart.html")
 
 
 @app.route("/login", methods=["GET"])
