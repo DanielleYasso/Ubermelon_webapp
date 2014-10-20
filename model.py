@@ -96,4 +96,10 @@ def get_melon_by_id(id):
 
 def get_customer_by_email(email):
     cursor = connect()
-    query = 
+    query = "SELECT email, givenname FROM customers WHERE email = ?"""
+    cursor.execute(query, (email,))
+    user_info = cursor.fetchone()
+    if not user_info:
+      return False
+    
+    return user_info

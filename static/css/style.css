@@ -10,6 +10,13 @@ div.navbar-header img {
     margin-right: 7px;
 }
 
+li.user-name {
+    color: white!important;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 15px;
+}
+
 div.melon-summary {
     display: inline-block;
 

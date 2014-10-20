@@ -79,8 +79,12 @@ def process_login():
     dictionary, look up the user, and store them in the session."""
     user_email = request.form.get("email")
     user_password = request.form.get("password")
-    print "*******************email, password", user_email, user_password
-    return "Oops! This needs to be implemented"
+    user_info = model.get_customer_by_email(user_email)
+    if user_info:
+        session["user"] = user_info
+        flash("Login Successful")
+    print "*******************email, password", session["user"]
+    return redirect("/melons")
 
 
 @app.route("/checkout")
