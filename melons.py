@@ -77,6 +77,9 @@ def show_login():
 def process_login():
     """TODO: Receive the user's login credentials located in the 'request.form'
     dictionary, look up the user, and store them in the session."""
+    user_email = request.form.get("email")
+    user_password = request.form.get("password")
+    print "*******************email, password", user_email, user_password
     return "Oops! This needs to be implemented"
 
 
