@@ -5,7 +5,14 @@
 <div class="cart well">
     <h3>Price per melon</h3>
     <p> {{ display_melon.price_str() }} </p>
-    <a class="btn btn-primary" href="/add_to_cart/{{display_melon.id}}">Add to Cart</a>
+    
+    <form action="/add_to_cart" method="POST">
+        <input type="hidden" name="id" value="{{display_melon.id}}">
+        <input type="submit" class="btn btn-primary" value="Add to Cart">
+    </form>
+
+    <!-- <a class="btn btn-primary" href="/add_to_cart/{{display_melon.id}}">Add to Cart</a> -->
+
 </div>
 <div class="melon-details">
     <h3>Product details</h3>

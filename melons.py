@@ -38,7 +38,7 @@ def shopping_cart():
     # get melon quantities
     if not cart_list:
         flash("Your cart is empty")
-    for melon_id in cart_list:
+    for melon_id in cart_list:  #  {'price':0, 'formatted_total_price':'$2.50'}
         melon_dict[melon_id] = melon_dict.get(melon_id, [0]) 
         melon_dict[melon_id][0] += 1
     # print "************************melon_dict:", melon_dict
@@ -53,18 +53,19 @@ def shopping_cart():
     return render_template("cart.html", melon_list = melon_list, quantities = melon_dict, 
         cart_total = total_string)
 
-@app.route("/add_to_cart/<int:id>")
-def add_to_cart(id):
+@app.route("/add_to_cart", methods=["POST"])
+def add_to_cart():
     """TODO: Finish shopping cart functionality using session variables to hold
     cart list.
 
     Intended behavior: when a melon is added to a cart, redirect them to the
     shopping cart page, while displaying the message
     "Successfully added to cart" """
+    id = int(request.form.get("id"))
     cart = session.get('cart', None) or []
     session['cart'] = cart + [id]
     #session.setdefault("cart", []).append(id)
-    print "**********************session:", session
+    print "**********************session:", session, cart
     flash("Melon successfully added to cart")
     return redirect("/cart")
 
