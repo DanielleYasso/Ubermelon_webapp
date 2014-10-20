@@ -34,11 +34,22 @@ def shopping_cart():
     list held in the session that contains all the melons to be added. Check
     accompanying screenshots for details."""
     cart_list = session.get("cart", False)
-    # melon_list = []
-    # for melon_id in cart_list:
-    #     melon_list.append(model.get_melon_by_id(melon_id))
-    melon_list = [model.get_melon_by_id(melon_id) for melon_id in cart_list]
-    return render_template("cart.html", melon_list = melon_list)
+    melon_dict = {}
+    # get melon quantities
+    for melon_id in cart_list:
+        melon_dict[melon_id] = melon_dict.get(melon_id, [0]) 
+        melon_dict[melon_id][0] += 1
+    # print "************************melon_dict:", melon_dict
+    melon_list = [model.get_melon_by_id(melon_id) for melon_id in melon_dict.keys()]
+    # print "*********************melon_list: ", melon_list
+    cart_total = 0
+    for melon in melon_list:
+        cart_total += melon_dict[melon.id][0] * melon.price
+        total = melon_dict[melon.id][0] * melon.price
+        melon_dict[melon.id].append("$%.2f" % total)
+    total_string = "Total: $%.2f" % cart_total
+    return render_template("cart.html", melon_list = melon_list, quantities = melon_dict, 
+        cart_total = total_string)
 
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
@@ -54,8 +65,6 @@ def add_to_cart(id):
     print "**********************session:", session
     flash("Melon successfully added to cart")
     return redirect("/cart")
-    # return render_template("cart.html")
-
 
 @app.route("/login", methods=["GET"])
 def show_login():

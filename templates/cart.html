@@ -6,13 +6,13 @@
     {% for melon in melon_list %}
     <tr>
         <td>{{ melon.common_name }}</td>
-        <td><!-- quantity --></td>
+        <td>{{ quantities[melon.id][0] }}</td>
         <td>{{ melon.price }}</td>
-        <td><!-- quantity * price --></td>
+        <td>{{ quantities[melon.id][1] }}</td>
     </tr>
     {% endfor %}
 </table>
-<h3>Total: $27.00</h3>
+<h3>{{ cart_total }}</h3>
 <a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
 {% endif %}
 {% endblock %}
