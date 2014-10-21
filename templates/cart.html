@@ -5,7 +5,7 @@
     <tr><th>Melon Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
     {% for melon in melon_list %}
     <tr>
-        <td>{{ melon.common_name }}</td>
+        <td><a href="/melon/{{melon.id}}" target="_blank">{{ melon.common_name }}</a></td>
         <td>{{ quantotals[melon.id]["quantity"] }}</td>
         <td>{{ quantotals[melon.id]["formatted_price"] }}</td>
         <td>{{ quantotals[melon.id]["formatted_total_price"] }}</td>

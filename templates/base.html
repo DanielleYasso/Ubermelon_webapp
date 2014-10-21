@@ -11,17 +11,19 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        
                         {% if session.get("user", False) %}
-                            <li class='user-name'>{{ session["user"][1] }}</li>
-                            
+                        <li class='user-name'>{{ session["user"][1] }}</li>
                         {% endif %}
+
                         <li><a href="/cart"><img class="melon-cart" src="/static/img/watermelon.png"> My Melon Cart</a></li>
                         
                         {% if session.get("user", False) %}
-                            <li><a href="/logout">Log Out</a></li>
+                        <li><a href="/logout">Log Out</a></li>
                         {% else %}
-                            <li><a href="/login">Log In</a></li>
+                        <li><a href="/login">Log In</a></li>
                         {% endif %}
+
                     </ul>
                 </div>
             </div>
