@@ -24,7 +24,7 @@ def show_melon(id):
     """This page shows the details of a given melon, as well as giving an
     option to buy the melon."""
     melon = model.get_melon_by_id(id)
-    print melon
+
     return render_template("melon_details.html",
                   display_melon = melon)
 
@@ -33,25 +33,29 @@ def shopping_cart():
     """TODO: Display the contents of the shopping cart. The shopping cart is a
     list held in the session that contains all the melons to be added. Check
     accompanying screenshots for details."""
-    cart_list = session.get("cart", [])
     melon_dict = {}
-    # get melon quantities
+    cart_list = session.get("cart", [])
     if not cart_list:
         flash("Your cart is empty")
-    for melon_id in cart_list:  #  {'price':0, 'formatted_total_price':'$2.50'}
-        melon_dict[melon_id] = melon_dict.get(melon_id, [0]) 
-        melon_dict[melon_id][0] += 1
-    # print "************************melon_dict:", melon_dict
-    melon_list = [model.get_melon_by_id(melon_id) for melon_id in melon_dict.keys()]
-    # print "*********************melon_list: ", melon_list
-    cart_total = 0
-    for melon in melon_list:
-        cart_total += melon_dict[melon.id][0] * melon.price
-        total = melon_dict[melon.id][0] * melon.price
-        melon_dict[melon.id].append("$%.2f" % total)
-    total_string = "Total: $%.2f" % cart_total
-    return render_template("cart.html", melon_list = melon_list, quantities = melon_dict, 
-        cart_total = total_string)
+    # create a dictionary where key = melon_id and value = dictionary with key=quantity, key=total
+    for melon_id in cart_list:
+        melon_dict.setdefault(melon_id, {})
+        melon_dict[melon_id]["quantity"] = melon_dict[melon_id].get("quantity", 0) + 1
+    melon_info_list = [model.get_melon_by_id(melon_id) for melon_id in melon_dict.keys()] 
+
+    cart_total = 0 
+    for melon in melon_info_list:
+        quantity = melon_dict[melon.id]["quantity"]
+        total = melon.price * quantity
+        cart_total += total
+        melon_dict[melon.id]["total"] = total
+        melon_dict[melon.id]["formatted_price"] = "$%.2f" % melon.price
+        melon_dict[melon.id]["formatted_total_price"] = "$%.2f" % total
+
+    cart_total_string = "Total: $%.2f" % cart_total
+    return render_template("cart.html", melon_list = melon_info_list, quantotals = melon_dict, 
+        cart_total = cart_total_string)
+    
 
 @app.route("/add_to_cart", methods=["POST"])
 def add_to_cart():
@@ -62,10 +66,7 @@ def add_to_cart():
     shopping cart page, while displaying the message
     "Successfully added to cart" """
     id = int(request.form.get("id"))
-    cart = session.get('cart', None) or []
-    session['cart'] = cart + [id]
-    #session.setdefault("cart", []).append(id)
-    print "**********************session:", session, cart
+    session.setdefault("cart", []).append(id)
     flash("Melon successfully added to cart")
     return redirect("/cart")
 
@@ -84,7 +85,7 @@ def process_login():
     if user_info:
         session["user"] = user_info
         flash("Login Successful")
-    print "*******************email, password", session["user"]
+
     return redirect("/melons")
 
 @app.route("/logout")
